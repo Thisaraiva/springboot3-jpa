@@ -1,12 +1,15 @@
 package com.thiagojavacourse.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +24,10 @@ public class User implements Serializable{
 	private String email;
 	private String phone;
 	private String password;
+	
+	//como temos uma associação de um para muitos, ou seja, um cliente para muitos pedidos, usamos a Anotation abaixo "@OneToMany"
+	@OneToMany(mappedBy = "client")//do outro lado da classe Order ele está mapeado pelo atributo "client"
+	private List<Order> orders = new ArrayList<>();
 	
 	public User() {		
 	}
@@ -73,6 +80,11 @@ public class User implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	//no caso de coleções/listas utilizamos somente os GET pois a lista não pode ser trocada, apenas incluir e excluir elementos
+	public List<Order> getOrders() {
+		return orders;
+	}
 
 	@Override
 	public int hashCode() {
@@ -90,7 +102,4 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-
 }
