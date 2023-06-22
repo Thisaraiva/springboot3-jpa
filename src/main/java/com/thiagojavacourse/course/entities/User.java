@@ -3,10 +3,20 @@ package com.thiagojavacourse.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_user")
 public class User implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//a estratégia de auto incremento do ID dá certo para a maioria dos bancos, caso contrário apenas mude esse informação.
+	private Long id; //como o ID é auto incrementável é necessário colocar a Anotation @GenerateValue
 	private String name;
 	private String email;
 	private String phone;
