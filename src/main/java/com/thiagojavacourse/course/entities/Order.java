@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,8 @@ public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")//garantir que a hora no Json seja apresentado no formato ISO8601
 	private Instant moment; //Antes da verão 8 do Java usava o Date, mas agora usa o Instant que é melhor
 	
 	//como temos uma associação de muitos para um, ou seja, muitos pedidos para um cliente, usamos a Anotation abaixo "@ManyToOne"
