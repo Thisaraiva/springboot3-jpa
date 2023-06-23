@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thiagojavacourse.course.entities.enums.OrderStatus;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,8 @@ public class Order implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")//garantir que a hora no Json seja apresentado no formato ISO8601
 	private Instant moment; //Antes da verão 8 do Java usava o Date, mas agora usa o Instant que é melhor
 	
+	private Integer orderStatus;
+	
 	//como temos uma associação de muitos para um, ou seja, muitos pedidos para um cliente, usamos a Anotation abaixo "@ManyToOne"
 	@ManyToOne
 	@JoinColumn(name = "client_id")
@@ -34,10 +37,11 @@ public class Order implements Serializable{
 	public Order() {		
 	}
 
-	public Order(Long id, Instant moment, User client) {
+	public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
 		super();
 		this.id = id;
 		this.moment = moment;
+		setOrderStatus(orderStatus);
 		this.client = client;
 	}
 
@@ -55,6 +59,16 @@ public class Order implements Serializable{
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+	
+	public OrderStatus getOrderStatus() {
+		return OrderStatus.valueOf(orderStatus);
+	}
+	
+	public void setOrderStatus(OrderStatus orderStatus) {
+		if(orderStatus != null) {
+		this.orderStatus = orderStatus.getCode();
+		}
 	}
 
 	public User getClient() {
