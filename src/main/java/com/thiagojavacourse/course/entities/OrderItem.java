@@ -66,6 +66,11 @@ public class OrderItem implements Serializable{
 		this.price = price;
 	}
 	
+	//na plataforma Java Interprise o que vale é o get então precisa adicionar o GET ao metodo subTotal, ficando conforme abaixo
+	public Double getSubTotal() {
+		return price * quantity;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
