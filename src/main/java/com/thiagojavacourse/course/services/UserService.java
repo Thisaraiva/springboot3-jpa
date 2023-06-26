@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.thiagojavacourse.course.entities.User;
 import com.thiagojavacourse.course.repositories.UserRepository;
+import com.thiagojavacourse.course.services.exceptions.ResourceNotFoundException;
 
 @Service //anotation "component" que já registra sua classe como um componente do spring e ela já poderá ser injetada com o @Autowired, mas como é uma classe de serviço usaremos o anotation @Service
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id); 
-		return obj.get(); 
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)); 
 	}
 	
 	public User insert(User obj) {
