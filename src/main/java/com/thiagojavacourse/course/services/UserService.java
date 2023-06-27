@@ -13,6 +13,8 @@ import com.thiagojavacourse.course.repositories.UserRepository;
 import com.thiagojavacourse.course.services.exceptions.DatabaseException;
 import com.thiagojavacourse.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service //anotation "component" que já registra sua classe como um componente do spring e ela já poderá ser injetada com o @Autowired, mas como é uma classe de serviço usaremos o anotation @Service
 public class UserService {
 	
@@ -43,9 +45,13 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User entity = repository.getReferenceById(id);
-		updateData(entity, obj);
-		return repository.save(entity);		
+		try {
+			User entity = repository.getReferenceById(id);
+			updateData(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
